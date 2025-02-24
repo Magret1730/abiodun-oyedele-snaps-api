@@ -1,0 +1,20 @@
+{
+  "name": "abiodun-oyedele-snaps-api",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Magret1730/abiodun-oyedele-snaps-api.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Magret1730/abiodun-oyedele-snaps-api/issues"
+  },
+  "homepage": "https://github.com/Magret1730/abiodun-oyedele-snaps-api#readme",
+  "description": ""
+}
