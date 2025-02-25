@@ -49,4 +49,28 @@ router.get("/:id", (req, res) => {
     }
 });
 
+router.get("/:id/comments", (req, res) => {
+    try {
+        const photos = readPhotos();
+
+        const id = req.params.id;
+
+        const photo = photos.find((photo) => photo.id === id);
+
+        if (photo) {
+            console.log(photo.comments);
+
+            res.status(200).json(photo.comments)
+
+        } else {
+            res.status(404).json("Photo comments not found in getComments");
+            console.error("Photo comments not found in getComments");
+        }
+
+    } catch (error) {
+        res.status(500).json("Error from get comments");
+        console.error("Error from get comments", error);
+    }
+});
+
 export default router;
