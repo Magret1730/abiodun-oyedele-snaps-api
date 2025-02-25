@@ -1,7 +1,6 @@
 import express from "express";
 const router = express.Router();
 // import crypto from "crypto";
-// import photos from "../data/photos.json";
 import fs from "fs";
 
 
@@ -34,12 +33,12 @@ router.get("/", (req, res) => {
 
         const photos = readPhotos(id);
 
-        console.log(photos);
+        // console.log(photos);
 
         res.status(200).json(photos);
     } catch (error) {
         console.error("Error from get photos /",error);
-        res.status(500).json({error: "Error from get photos"});
+        res.status(500).json({error: "Error from get photos route"});
     }
 });
 
@@ -53,11 +52,11 @@ router.get("/:id", (req, res) => {
             res.status(200).json(photo);
         } else {
             console.error("Photo not found in getPhotoById");
-            res.status(404).json("Photo not found in getPhotoById");
+            res.status(404).json("Photo not found in getPhotoById route");
         }
     } catch (error) {
         console.error("Error from get photosById", error);
-        res.status(500).json({error: "Error from get photosById"});
+        res.status(500).json({error: "Error from get photos by Id route"});
     }
 });
 
@@ -66,7 +65,7 @@ router.get("/:id/comments", (req, res) => {
         const id = req.params.id;
 
         const photo = getPhoto(id);
-        console.log("Photo from comments by ID",photo);
+        // console.log("Photo from comments by ID",photo);
 
         if (photo) {
             res.status(200).json(photo.comments)
@@ -78,7 +77,7 @@ router.get("/:id/comments", (req, res) => {
 
     } catch (error) {
         console.error("Error from get comments", error);
-        res.status(500).json({error: "Error from get comments"});
+        res.status(500).json({error: "Error from get comments route"});
     }
 });
 
