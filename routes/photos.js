@@ -12,18 +12,34 @@ function readPhotos() {
 
         return parsedData;
     } catch (error) {
-        console.error(error)
+        console.error("Error from readPhotos", error)
     }
 }
 
-router.get("/", (_req, res) => {
+function getPhoto(id) {
     try {
         const photos = readPhotos();
+
+        const photo = photos.find((photo) => photo.id === id);
+
+        return photo;
+    } catch (error) {
+        console.error("Error from getPhoto", error)
+    }
+}
+
+router.get("/", (req, res) => {
+    try {
+        const id = req.params.id;
+
+        const photos = readPhotos(id);
+
+        console.log(photos);
 
         res.status(200).json(photos);
     } catch (error) {
         console.error("Error from get photos /",error);
-        res.status(500).json("Error from get photos")
+        res.status(500).json({error: "Error from get photos"});
     }
 });
 
@@ -31,13 +47,9 @@ router.get("/:id", (req, res) => {
     try {
         const id = req.params.id;
 
-        const photos = readPhotos();
-
-        const photo = photos.find((photo) => photo.id === id);
+        const photo = getPhoto(id);
 
         if (photo) {
-            console.log(photo);
-
             res.status(200).json(photo);
         } else {
             console.error("Photo not found in getPhotoById");
@@ -45,31 +57,36 @@ router.get("/:id", (req, res) => {
         }
     } catch (error) {
         console.error("Error from get photosById", error);
-        res.status(500).json("Error from get photosById");
+        res.status(500).json({error: "Error from get photosById"});
     }
 });
 
 router.get("/:id/comments", (req, res) => {
     try {
-        const photos = readPhotos();
-
         const id = req.params.id;
 
-        const photo = photos.find((photo) => photo.id === id);
+        const photo = getPhoto(id);
+        console.log("Photo from comments by ID",photo);
 
         if (photo) {
-            console.log(photo.comments);
-
             res.status(200).json(photo.comments)
 
         } else {
-            res.status(404).json("Photo comments not found in getComments");
             console.error("Photo comments not found in getComments");
+            res.status(404).json("Photo comments not found in getComments");
         }
 
     } catch (error) {
-        res.status(500).json("Error from get comments");
         console.error("Error from get comments", error);
+        res.status(500).json({error: "Error from get comments"});
+    }
+});
+
+router.post("/:id/comments", (req, res) => {
+    try {
+
+    } catch (error) {
+        res.status(500).json({error: "Error from post comments"});
     }
 });
 
