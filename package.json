@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "nodemon index.js"
   },
   "repository": {
     "type": "git",
@@ -16,5 +16,10 @@
     "url": "https://github.com/Magret1730/abiodun-oyedele-snaps-api/issues"
   },
   "homepage": "https://github.com/Magret1730/abiodun-oyedele-snaps-api#readme",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "nodemon": "^3.1.9"
+  }
 }
