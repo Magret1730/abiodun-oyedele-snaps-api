@@ -1,8 +1,8 @@
+import { timeStamp } from "console";
 import express from "express";
 const router = express.Router();
-// import crypto from "crypto";
 import fs from "fs";
-
+import { v4 as uuidv4 } from "uuid";
 
 function readPhotos() {
     try {
@@ -27,13 +27,17 @@ function getPhoto(id) {
     }
 }
 
+function writePhoto(data) {
+    try {
+        fs.writeFileSync("./data/photos.json", JSON.stringify(data, null, 4));
+    } catch (error) {
+        console.error("Error in writePhoto function", error);
+    }
+}
+
 router.get("/", (req, res) => {
     try {
-        const id = req.params.id;
-
-        const photos = readPhotos(id);
-
-        // console.log(photos);
+        const photos = readPhotos();
 
         res.status(200).json(photos);
     } catch (error) {
@@ -65,7 +69,6 @@ router.get("/:id/comments", (req, res) => {
         const id = req.params.id;
 
         const photo = getPhoto(id);
-        // console.log("Photo from comments by ID",photo);
 
         if (photo) {
             res.status(200).json(photo.comments)
@@ -83,6 +86,43 @@ router.get("/:id/comments", (req, res) => {
 
 router.post("/:id/comments", (req, res) => {
     try {
+        const id = req.params.id;
+
+        const {name, comment} = req.body;
+
+        if (!name || !comment) {
+            return res.status(400).json({error: "Name and comments are required!!!"});
+        }
+
+        const photos = readPhotos();
+
+        const photo = getPhoto(id);
+        if (!photo) {
+            return res.status(404).json({error: "Photo not found!!!"});
+        }
+
+        const photoIndex = photos.findIndex((p) => p.id === id);
+        if (photoIndex === -1) {
+            return res.status(404).json({ error: 'Photo not found.' });
+        }
+
+        const newComment = {
+            id: uuidv4(),
+            name: name,
+            comment: comment,
+            timestamp: Date.now(),
+        }
+
+        // Ensures the comments array exists
+        if (!Array.isArray(photos[photoIndex].comments)) {
+            photos[photoIndex].comments = [];
+        }
+
+        photos[photoIndex].comments.unshift(newComment);
+
+        writePhoto(photos);
+
+        res.status(201).json(newComment);
 
     } catch (error) {
         res.status(500).json({error: "Error from post comments"});
